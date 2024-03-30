@@ -4,18 +4,18 @@ import { DB } from "../../db"
 const db = new DB()
 
 export const historyLandigCtrl = async (
-    req: Request,
-    res: Response,
-    next: NextFunction
+  req: Request,
+  res: Response,
+  next: NextFunction
 ) => {
   try {
     await db.earlierVersion()
 
-    const {data, sections} = await db.getTemplate()
+    const { data, sections } = await db.getTemplate()
 
     res.json({
-        data,
-        sections
+      template: data,
+      sections
     })
   } catch (error) {
     next(error)

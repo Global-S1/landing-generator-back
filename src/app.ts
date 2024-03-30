@@ -5,7 +5,6 @@ import express from 'express'
 import fileUpload from 'express-fileupload'
 import cors from 'cors'
 
-import openAiRoutes from "./openai/router/openaiRoutes";
 import landingRoutes from "./landing/router/landingRoutes";
 import { errorHandler } from './middlewares/errorHandler';
 
@@ -22,7 +21,6 @@ app.use(fileUpload({
     tempFileDir: tempDir
 }))
 
-app.use('/api/ai', openAiRoutes)
 app.use('/api/landing', landingRoutes)
 
 app.use(errorHandler)

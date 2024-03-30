@@ -4,6 +4,7 @@ import { NextFunction, Request, Response } from "express";
 import { JSDOM } from 'jsdom'
 import { OpenaiDalleResponse } from "../../interfaces";
 import { DB } from "../../db";
+import { OpenaiApi } from '../../config';
 
 const imgsDirectory = '../../imgs/'
 
@@ -17,9 +18,8 @@ export const createImgCtrl = async (
 
     const { prompt, sectionId, oldSrc } = req.body as { prompt: string, oldSrc: string, sectionId: string }
 
-    const api_key = process.env.API_KEY
-
     try {
+
         const body = {
             model: 'dall-e-3',
             prompt,
@@ -28,25 +28,9 @@ export const createImgCtrl = async (
             response_format: 'b64_json'
         }
 
-        const resp = await fetch('https://api.openai.com/v1/images/generations', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                'Authorization': `Bearer ${api_key}`
-            },
-            body: JSON.stringify(body)
-        })
+        const resp = await OpenaiApi.post<OpenaiDalleResponse>('/images/generations', body)
 
-        if (!resp.ok) {
-            const error = await resp.json()
-            return res.json({
-                msg: 'error',
-                error
-            })
-        }
-
-        const openaiResponse: OpenaiDalleResponse = await resp.json()
-
+        const openaiResponse = resp.data
 
         const imageData = openaiResponse.data[0].b64_json;
         const imageBuffer = Buffer.from(imageData, 'base64');
@@ -85,7 +69,7 @@ export const createImgCtrl = async (
         return res.json({
             fileName,
             url: urlImage,
-            data: newTemplate,
+            template: newTemplate,
             sections
         });
     } catch (error) {

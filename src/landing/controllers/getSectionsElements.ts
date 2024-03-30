@@ -45,11 +45,11 @@ export const updateSectionElementsCtrl = async (
     try {
         const template = await db.getTemplate();
         const document = new JSDOM(template.data).window.document;
-        const sectionIds = getSectionsFromLanding(template.data);
+        const sectionsId = getSectionsFromLanding(template.data);
 
         const sections: { [id: string]: ElementToEdit[] } = {}
 
-        sectionIds.forEach(id => {
+        sectionsId.forEach(id => {
             const sectionDOM = document.getElementById(id);
             const sectionElements: ElementToEdit[] = []
             if (sectionDOM) {
@@ -113,7 +113,7 @@ export const editElementContent = async (
             $elements?.forEach(element => {
                 const href = element.getAttribute('href')
                 console.log(element.textContent)
-                if (oldValues.href === href || element.textContent?.trim() === oldValues.text){
+                if (oldValues.href === href || element.textContent?.trim() === oldValues.text) {
                     element.setAttribute("href", newValues.href)
                     element.textContent = newValues.text
 
@@ -121,7 +121,7 @@ export const editElementContent = async (
                         if (element.attributes['href'] === oldValues.href) {
                             element.attributes['href'] = newValues.href
                         }
-                        if(element.text === oldValues.text){
+                        if (element.text === oldValues.text) {
                             element.text = newValues.text
                         }
 
@@ -149,7 +149,7 @@ export const editElementContent = async (
         await db.saveSections(sections)
 
         res.json({
-            data: newTemplate,
+            template: newTemplate,
             sections
         })
     } catch (error) {

@@ -10,7 +10,6 @@ import { ElementToEdit, getElementInfo } from '../../helpers/getElementInfo';
 import { getSectionsFromLanding } from '../../helpers/getSectionsFromTemplate';
 
 const db = new DB()
-const templatesDirectory = '../../generated-templates/'
 
 export const existTemplateCtrl = async (
     req: Request,
@@ -103,8 +102,6 @@ export const createBasicLandingCtrl = async (
         await db.saveInitialPrompt(prompt)
         await db.saveTemplate(dom.serialize(), total_tokens)
         await db.saveSections(sections)
-        const directoryPath = path.join(__dirname, templatesDirectory)
-        customWriteFile({ fileName: 'template', content: dom.serialize(), mime: 'html', directoryPath: directoryPath })
 
         res.json({
             usage: {
@@ -112,7 +109,7 @@ export const createBasicLandingCtrl = async (
                 total_tokens
             },
             sections,
-            data: dom.serialize()
+            template: dom.serialize()
         })
     } catch (error) {
         next(error)
@@ -146,7 +143,6 @@ export const editSectionCtrl = async (
         Just deliver the code, do not generate extra text or explanations.
         DO NOT include markdown "\`\`\`" or "\`\`\`html" at the start or end.
         For images, if the images have a URL in its src attribute use that, if it doesn't, use placeholder images from https://placehold.co and include a detailed description of the image in the alt text so that an image generation AI can generate the image later.`
-        // For images, use placeholder images from https://placehold.co and include a detailed description of the image in the alt text so that an image generation AI can generate the image later.`
 
         const completion = await chatCompletion({ system_prompt: SYSTEM_PROMPT, user_prompt: prompt, model: 'gpt-4-0125-preview' })
 
@@ -174,12 +170,9 @@ export const editSectionCtrl = async (
         await db.saveTemplate(dom.serialize(), completion.usage.total_tokens)
         await db.saveSections(sections)
 
-        const directoryPath = path.join(__dirname, templatesDirectory)
-        customWriteFile({ fileName: 'template', content: dom.serialize(), mime: 'html', directoryPath: directoryPath })
-
         res.json({
             usage: completion.usage,
-            data: dom.serialize(),
+            template: dom.serialize(),
             sections
         })
 
@@ -188,25 +181,23 @@ export const editSectionCtrl = async (
     }
 }
 
+
 export const editTemplateCtrl = async (
     req: Request,
     res: Response,
     next: NextFunction
 ) => {
-    const { template } = req.body as { template: string }
+    const { template: editedTemplate } = req.body as { template: string }
 
     try {
-
-        await db.saveTemplate(template, 0)
-        const sectionsId = getSectionsFromLanding(template)
-        const dom = new JSDOM(template)
+        const dom = new JSDOM(editedTemplate)
         const document = dom.window.document
 
-        // Agregar objeto con los elementos de las secciones
+        //Actualizar secciones
+        const sectionsId = getSectionsFromLanding(editedTemplate);
         const sections: { [id: string]: ElementToEdit[] } = {}
 
-        await sectionsId.forEach(id => {
-
+        sectionsId.forEach(id => {
             const sectionDOM = document.getElementById(id);
             const sectionElements: ElementToEdit[] = []
             if (sectionDOM) {
@@ -216,12 +207,12 @@ export const editTemplateCtrl = async (
             sections[id] = sectionElements
         })
 
+        await db.saveTemplate(dom.serialize(), 0)
         await db.saveSections(sections)
-        console.log('Template editado')
 
         res.json({
             sections,
-            data: dom.serialize()
+            template: dom.serialize()
         })
     } catch (error) {
         next(error)
