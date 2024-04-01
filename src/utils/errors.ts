@@ -12,6 +12,12 @@ export class NotFoundError extends CustomError {
         super(message);
     }
 }
+export class ValidationError extends CustomError {
+	statusCode = 400;
+	constructor(message: string) {
+		super(message);
+	}
+}
 export class BadRequest extends CustomError {
     statusCode = 400;
     constructor(message: string) {
@@ -29,4 +35,16 @@ export class InternalServerError extends CustomError{
     constructor(message: string) {
         super(message);
     }
+}
+export class UnAuthorizedError extends CustomError {
+	statusCode = 401;
+	constructor(message: string) {
+		super(message);
+	}
+}
+export class ForbiddenError extends CustomError {
+	statusCode = 403;
+	constructor(message: string) {
+		super(message);
+	}
 }
