@@ -1,13 +1,14 @@
-import path from 'path'
 import { NextFunction, Request, Response } from "express";
 import { JSDOM } from 'jsdom'
-import { customWriteFile } from "../../helpers/custom-write-file";
-import { searchTemplate } from '../../helpers/searchTemplate';
-import { chatCompletion } from '../../helpers/chat-completion';
 import { DB } from '../../db';
 import { NotAcceptable, NotFoundError } from '../../utils/errors';
-import { ElementToEdit, getElementInfo } from '../../helpers/getElementInfo';
-import { getSectionsFromLanding } from '../../helpers/getSectionsFromTemplate';
+import { 
+    ElementToEdit, 
+    getElementInfo, 
+    getSectionsFromLanding,
+    searchTemplate,
+    chatCompletion 
+} from '../../helpers';
 
 const db = new DB()
 

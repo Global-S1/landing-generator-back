@@ -1,7 +1,7 @@
+import { NextFunction, Request, Response } from "express"
 import fs from 'fs'
 import path from 'path'
-import { NextFunction, Request, Response } from "express"
-import { customWriteFile } from '../../helpers/custom-write-file'
+import { customWriteFile } from '../../helpers'
 
 export const exportLandingPageCtrl = async (
     req: Request, 

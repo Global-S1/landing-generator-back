@@ -1,8 +1,11 @@
-import { DB } from "../../db";
-import { JSDOM } from 'jsdom';
 import { NextFunction, Request, Response } from "express";
-import { getSectionsFromLanding } from "../../helpers/getSectionsFromTemplate";
-import { ElementToEdit, getElementInfo } from "../../helpers/getElementInfo";
+import { JSDOM } from 'jsdom';
+import { DB } from "../../db";
+import {
+    getSectionsFromLanding,
+    getElementInfo,
+    ElementToEdit
+} from "../../helpers";
 import { EditElementContentDto } from "../dto";
 
 const db = new DB();

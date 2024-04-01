@@ -1,12 +1,19 @@
-import fs from 'fs'
-import path from 'path'
 import { NextFunction, Request, Response } from "express";
+import { v2 as cloudinary } from 'cloudinary';
+import { UploadedFile } from 'express-fileupload';
 import { JSDOM } from 'jsdom'
 import { OpenaiDalleResponse } from "../../interfaces";
 import { DB } from "../../db";
 import { OpenaiApi } from '../../config';
 
-const imgsDirectory = '../../imgs/'
+
+cloudinary.config({
+    cloud_name: 'dqwojznyw',
+    api_key: process.env.CLOUDINARY_API_KEY,
+    api_secret: process.env.CLOUDINARY_API_SECRET
+});
+
+const CLOUDINARY_FOLDER = 'LANDING-AI'
 
 const db = new DB()
 
@@ -17,9 +24,7 @@ export const createImgCtrl = async (
 ) => {
 
     const { prompt, sectionId, oldSrc } = req.body as { prompt: string, oldSrc: string, sectionId: string }
-
     try {
-
         const body = {
             model: 'dall-e-3',
             prompt,
@@ -29,46 +34,51 @@ export const createImgCtrl = async (
         }
 
         const resp = await OpenaiApi.post<OpenaiDalleResponse>('/images/generations', body)
-
         const openaiResponse = resp.data
-
-        const imageData = openaiResponse.data[0].b64_json;
-        const imageBuffer = Buffer.from(imageData, 'base64');
-
-        const fileName = `img_${new Date().getTime()}.jpg`
-        const filePath = path.join(__dirname, imgsDirectory, fileName);
-
-        fs.writeFileSync(filePath, imageBuffer, 'base64');
-        const urlImage = `http://localhost:3001/api/landing/images/${fileName}`
+        const imageData = openaiResponse.data[0].b64_json
 
         const { data, sections } = await db.getTemplate()
         const dom = new JSDOM(data)
         const document = dom.window.document
 
         const section = document.getElementById(sectionId)
-
         const $elements = section?.querySelectorAll('img')
 
-        $elements?.forEach(element => {
-            const src = element.getAttribute('src')
-            if (oldSrc === src) {
-                element.setAttribute("src", urlImage)
-                sections[sectionId].forEach(element => {
-                    if (element.attributes['src'] === oldSrc) {
-                        element.attributes['src'] = urlImage
+        if ($elements) {
+            for (const element of $elements) {
+                const src = element.getAttribute('src')
+                if (oldSrc === src) {
+                    // Subir imagen a cloudinary
+                    const cloudinaryResponse = await cloudinary.uploader.upload(`data:image/jpeg;base64,${imageData}`, {
+                        folder: CLOUDINARY_FOLDER
+                    })
+                    const urlImage = cloudinaryResponse.secure_url
+
+                    // Eliminar imagen de cloudinary
+                    const nameArr = oldSrc.split("/");
+                    const name = nameArr[nameArr.length - 1];
+                    const [public_id] = name.split(".");
+                
+                    if (nameArr.includes(CLOUDINARY_FOLDER)) {
+                        await cloudinary.uploader.destroy(`${CLOUDINARY_FOLDER}/${public_id}`);
                     }
 
-                })
+                    element.setAttribute("src", urlImage)
+                    sections[sectionId].forEach(element => {
+                        if (element.attributes['src'] === oldSrc) {
+                            element.attributes['src'] = urlImage
+                        }
+                    })
+                }
             }
-        })
+        }
+
 
         const newTemplate = dom.serialize()
         await db.saveTemplate(newTemplate, 0)
         await db.saveSections(sections)
 
         return res.json({
-            fileName,
-            url: urlImage,
             template: newTemplate,
             sections
         });
@@ -77,15 +87,57 @@ export const createImgCtrl = async (
     }
 }
 
-export const serverImage = async (
-    req: Request,
-    res: Response,
-    next: NextFunction
-) => {
+export const updateImageCloudinary = async (req: Request, res: Response, next: NextFunction) => {
     try {
-        const fileName = req.params.fileName;
-        const imagePath = path.join(__dirname, imgsDirectory, fileName);
-        res.sendFile(imagePath);
+        const { oldSrc, sectionId } = req.query as { oldSrc: string, sectionId: string }
+        const { file } = req.files as { file: UploadedFile }
+        const { tempFilePath } = file
+
+        const { data, sections } = await db.getTemplate()
+        const dom = new JSDOM(data)
+        const document = dom.window.document
+
+        const section = document.getElementById(sectionId)
+        const $elements = section?.querySelectorAll('img')
+
+        if ($elements) {
+            for (const element of $elements) {
+                const src = element.getAttribute('src')
+
+                if (oldSrc === src) {
+                    // Subir imagen a cloudinary
+                    const cloudinaryResponse = await cloudinary.uploader.upload(tempFilePath, {
+                        folder: CLOUDINARY_FOLDER
+                    })
+                    const urlImage = cloudinaryResponse.secure_url
+
+                    // Eliminar imagen de cloudinary
+                    const nameArr = oldSrc.split("/");
+                    const name = nameArr[nameArr.length - 1];
+                    const [public_id] = name.split(".");
+                    if (nameArr.includes(CLOUDINARY_FOLDER)) {
+                        await cloudinary.uploader.destroy(`${CLOUDINARY_FOLDER}/${public_id}`);
+                    }
+
+                    element.setAttribute("src", urlImage)
+                    sections[sectionId].forEach(element => {
+                        if (element.attributes['src'] === oldSrc) {
+                            element.attributes['src'] = urlImage
+                        }
+                    })
+                }
+            }
+        }
+
+        const newTemplate = dom.serialize()
+        await db.saveTemplate(newTemplate, 0)
+        await db.saveSections(sections)
+
+        return res.json({
+            template: newTemplate,
+            sections
+        });
+
     } catch (error) {
         next(error)
     }

@@ -1,12 +1,12 @@
 import { Router } from 'express'
 
+import { body, query } from 'express-validator'
+import { validateFields, validateFile } from '../../middlewares'
 import { createBasicLandingCtrl, editSectionCtrl, editTemplateCtrl, existTemplateCtrl, resetCtrl } from '../controllers/landingControllers'
-import { validateFields } from '../../middlewares'
-import { body } from 'express-validator'
-import { exportLandingPageCtrl } from '../controllers/exportLanding'
+import { exportLandingPageCtrl } from '../controllers'
 import { editElementContent, getSectionsElementsCtrl, updateSectionElementsCtrl } from '../controllers/getSectionsElements'
 import { historyLandigCtrl } from '../controllers/historyLandig'
-import { createImgCtrl, serverImage } from '../controllers/imagesController'
+import { createImgCtrl, updateImageCloudinary } from '../controllers/imagesController'
 
 const router = Router()
 
@@ -51,12 +51,18 @@ router.put('/edit-element', [
 
 router.get('/earlier-version', historyLandigCtrl)
 
-router.post('/img-create', [
+router.post('/images/create', [
     body('prompt', 'prompt is required').notEmpty(),
     body('oldSrc', 'oldSrc is required').notEmpty(),
     body('sectionId', 'must be required').isString(),
     validateFields
 ], createImgCtrl)
-router.get('/images/:fileName', serverImage)
+
+router.post('/images/upload', [
+    query('oldSrc', 'must be required').isString(),
+    query('sectionId', 'must be required').isString(),
+    validateFile(['png', 'jpg', 'jpeg']),
+    validateFields
+], updateImageCloudinary)
 
 export default router

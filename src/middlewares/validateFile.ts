@@ -6,7 +6,7 @@ export const validateFile = (allowedFiles: string[]) => {
     return (req: Request, res: Response, next: NextFunction) => {
 
         const files = req.files as { file: UploadedFile } | null
-
+        console.log(files)
         if (!files) {
             return res.status(400).json({
                 msg: 'Se requiere archivo, Key: file - tipo: File',
