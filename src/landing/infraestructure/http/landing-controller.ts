@@ -177,4 +177,14 @@ export class LandingController {
             next(error)
         }
     }
+    public convertToElementor = async (req: Request, res: Response, next: NextFunction) => {
+        try {
+          
+            const template = await this.landingUseCase.converToElementor()
+
+            return res.status(200).json(template)
+        } catch (error) {
+            next(error)
+        }
+    }
 }

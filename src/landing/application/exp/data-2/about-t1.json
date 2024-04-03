@@ -1,0 +1,148 @@
+{
+    "content": [
+        {
+            "id": "about",
+            "settings": {
+                "padding": {
+                    "unit": "px",
+                    "top": "10",
+                    "right": "0",
+                    "bottom": "20",
+                    "left": "0",
+                    "isLinked": false
+                },
+                "_title": "About"
+            },
+            "elements": [
+                {
+                    "id": "container",
+                    "settings": {
+                        "flex_direction": "row",
+                        "justify_content": "between",
+                        "align_items": "center",
+                        "padding": {
+                            "unit": "px",
+                            "top": "0",
+                            "right": "4",
+                            "bottom": "0",
+                            "left": "4",
+                            "isLinked": true
+                        },
+                        "_title": "Container"
+                    },
+                    "elements": [
+                        {
+                            "id": "about-image",
+                            "settings": {
+                                "image": {
+                                    "id": "",
+                                    "url": "https://placehold.co/400x300"
+                                },
+                                "height": {
+                                    "unit": "px",
+                                    "size": 96,
+                                    "sizes": []
+                                },
+                                "width": {
+                                    "unit": "px",
+                                    "size": 450,
+                                    "sizes": []
+                                }
+                            },
+                            "elements": [],
+                            "isInner": false,
+                            "widgetType": "image",
+                            "elType": "widget"
+                        },
+                        {
+                            "id": "about-content",
+                            "settings": {
+                                "max_width": "lg"
+                            },
+                            "elements": [
+                                {
+                                    "id": "about-title",
+                                    "settings": {
+                                        "title": "Sobre Nosotros",
+                                        "size": "xl",
+                                        "header_size": "h2",
+                                        "title_color": "#000000",
+                                        "typography_typography": "custom",
+                                        "typography_font_family": "Roboto",
+                                        "typography_font_weight": "600",
+                                        "margin_bottom": "4"
+                                    },
+                                    "elements": [],
+                                    "isInner": false,
+                                    "widgetType": "heading",
+                                    "elType": "widget"
+                                },
+                                {
+                                    "id": "about-description-1",
+                                    "settings": {
+                                        "title": "Sabrocito es un emprendimiento de comida rápida ubicado en el centro de Lima. Nos especializamos en una gran diversidad de hamburguesas que han hecho de nuestro restaurante uno de los más populares en la ciudad.",
+                                        "size": "md",
+                                        "title_color": "#000000",
+                                        "typography_typography": "custom",
+                                        "typography_font_family": "Roboto",
+                                        "typography_font_weight": "400",
+                                        "margin_bottom": "4"
+                                    },
+                                    "elements": [],
+                                    "isInner": false,
+                                    "widgetType": "heading",
+                                    "elType": "widget"
+                                },
+                                {
+                                    "id": "about-description-2",
+                                    "settings": {
+                                        "title": "Ven y disfruta de nuestras deliciosas hamburguesas en un ambiente acogedor y familiar.",
+                                        "size": "md",
+                                        "title_color": "#000000",
+                                        "typography_typography": "custom",
+                                        "typography_font_family": "Roboto",
+                                        "typography_font_weight": "400",
+                                        "margin_bottom": "8"
+                                    },
+                                    "elements": [],
+                                    "isInner": false,
+                                    "widgetType": "heading",
+                                    "elType": "widget"
+                                }
+                            ],
+                            "isInner": true,
+                            "elType": "container"
+                        }
+                    ],
+                    "isInner": false,
+                    "elType": "container"
+                }
+            ],
+            "isInner": false,
+            "elType": "section"
+        }
+    ],
+    "page_settings": {
+        "padding": {
+            "unit": "px",
+            "top": 0,
+            "right": 0,
+            "bottom": 0,
+            "left": 0,
+            "isLinked": false
+        },
+        "background_background": "classic",
+        "background_color": "#FFFFFFFF",
+        "padding_mobile": {
+            "unit": "px",
+            "top": 0,
+            "bottom": 0,
+            "left": 0,
+            "right": 0,
+            "isLinked": false
+        }
+    },
+    "version": "0.4",
+    "title": "about-t1",
+    "type": "page"
+}

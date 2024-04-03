@@ -72,4 +72,6 @@ router.post('/images/upload/:id', [
     validateFields
 ], landingCtrl.uploadImg)
 
+router.get('/exp/convert', landingCtrl.convertToElementor)
+
 export default router

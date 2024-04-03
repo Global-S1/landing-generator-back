@@ -1,0 +1,160 @@
+{
+    "content": [
+        {
+            "id": "hero",
+            "settings": {
+                "padding": {
+                    "unit": "px",
+                    "top": "10",
+                    "right": "0",
+                    "bottom": "20",
+                    "left": "0",
+                    "isLinked": false
+                },
+                "_title": "Hero"
+            },
+            "elements": [
+                {
+                    "id": "container",
+                    "settings": {
+                        "flex_direction": "row",
+                        "justify_content": "between",
+                        "align_items": "center",
+                        "padding": {
+                            "unit": "px",
+                            "top": "0",
+                            "right": "4",
+                            "bottom": "0",
+                            "left": "4",
+                            "isLinked": true
+                        },
+                        "_title": "Container"
+                    },
+                    "elements": [
+                        {
+                            "id": "hero-content",
+                            "settings": {
+                                "max_width": "lg"
+                            },
+                            "elements": [
+                                {
+                                    "id": "hero-title",
+                                    "settings": {
+                                        "title": "Bienvenido a Sabrocito",
+                                        "size": "xl",
+                                        "header_size": "h1",
+                                        "title_color": "#000000",
+                                        "typography_typography": "custom",
+                                        "typography_font_family": "Roboto",
+                                        "typography_font_weight": "600",
+                                        "margin_bottom": "4"
+                                    },
+                                    "elements": [],
+                                    "isInner": false,
+                                    "widgetType": "heading",
+                                    "elType": "widget"
+                                },
+                                {
+                                    "id": "hero-description",
+                                    "settings": {
+                                        "title": "Saborea la mejor variedad de hamburguesas en el restaurante más popular de Lima, ubicado en el centro de la ciudad.",
+                                        "size": "lg",
+                                        "title_color": "#000000",
+                                        "typography_typography": "custom",
+                                        "typography_font_family": "Roboto",
+                                        "typography_font_weight": "400",
+                                        "margin_bottom": "4"
+                                    },
+                                    "elements": [],
+                                    "isInner": false,
+                                    "widgetType": "heading",
+                                    "elType": "widget"
+                                },
+                                {
+                                    "id": "hero-button",
+                                    "settings": {
+                                        "text": "Reserva ahora",
+                                        "size": "md",
+                                        "background_color": "#4299e1",
+                                        "button_background_hover_color": "#3182ce",
+                                        "text_color": "#ffffff",
+                                        "text_hover_color": "#ffffff",
+                                        "padding_top": "3",
+                                        "padding_right": "6",
+                                        "padding_bottom": "3",
+                                        "padding_left": "6",
+                                        "border_radius": "md"
+                                    },
+                                    "elements": [],
+                                    "isInner": false,
+                                    "widgetType": "button",
+                                    "elType": "widget"
+                                }
+                            ],
+                            "isInner": true,
+                            "elType": "container"
+                        },
+                        {
+                            "id": "hero-image",
+                            "settings": {
+                                "image": {
+                                    "id": "",
+                                    "url": "https://res.cloudinary.com/dqwojznyw/image/upload/v1712160629/LANDING-AI/qw9gp1f7s9yatfkamna9.png"
+                                },
+                                "height": {
+                                    "unit": "px",
+                                    "size": 80,
+                                    "sizes": []
+                                },
+                                "width": {
+                                    "unit": "px",
+                                    "size": 350,
+                                    "sizes": []
+                                },
+                                "border_radius": {
+                                    "unit": "px",
+                                    "top": "12",
+                                    "right": "12",
+                                    "bottom": "12",
+                                    "left": "12",
+                                    "isLinked": true
+                                }
+                            },
+                            "elements": [],
+                            "isInner": false,
+                            "widgetType": "image",
+                            "elType": "widget"
+                        }
+                    ],
+                    "isInner": false,
+                    "elType": "container"
+                }
+            ],
+            "isInner": false,
+            "elType": "section"
+        }
+    ],
+    "page_settings": {
+        "padding": {
+            "unit": "px",
+            "top": 0,
+            "right": 0,
+            "bottom": 0,
+            "left": 0,
+            "isLinked": false
+        },
+        "background_background": "classic",
+        "background_color": "#FFFFFFFF",
+        "padding_mobile": {
+            "unit": "px",
+            "top": 0,
+            "bottom": 0,
+            "left": 0,
+            "right": 0,
+            "isLinked": false
+        }
+    },
+    "version": "0.4",
+    "title": "hero-t2",
+    "type": "page"
+}

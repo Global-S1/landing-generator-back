@@ -1,0 +1,127 @@
+{
+    "content": [
+        {
+            "id": "35274e36",
+            "settings": {
+                "padding": {
+                    "unit": "px",
+                    "top": "80",
+                    "right": "20",
+                    "bottom": "80",
+                    "left": "20",
+                    "isLinked": true
+                },
+                "_position": "relative",
+                "background_background": "gradient",
+                "background_color": "#007BA7",
+                "background_overlay": "gradient",
+                "background_overlay_gradient": "linear-gradient(135deg, rgba(0,123,167,0.9) 0%, rgba(0,175,180,0.9) 100%)",
+                "text_align": "center",
+                "background_color_stop": {
+                    "unit": "%",
+                    "size": 12,
+                    "sizes": []
+                },
+                "background_color_b": "#37B2AC",
+                "background_gradient_angle": {
+                    "unit": "deg",
+                    "size": 90,
+                    "sizes": []
+                }
+            },
+            "elements": [
+                {
+                    "id": "5f06cdb4",
+                    "settings": {
+                        "margin": {
+                            "unit": "px",
+                            "top": "0",
+                            "right": "auto",
+                            "bottom": "0",
+                            "left": "auto",
+                            "isLinked": false
+                        },
+                        "flex_direction": "row",
+                        "flex_justify_content": "center",
+                        "flex_align_items": "center"
+                    },
+                    "elements": [
+                        {
+                            "id": "6639bce",
+                            "settings": {
+                                "title": "Get in touch with us today! \nCall us on: +1 562-789-1935",
+                                "size": "medium",
+                                "title_color": "#FFFFFF",
+                                "typography_typography": "custom",
+                                "typography_font_family": "sans-serif",
+                                "typography_font_weight": "700",
+                                "text_align": "left"
+                            },
+                            "elements": [],
+                            "isInner": false,
+                            "widgetType": "heading",
+                            "elType": "widget"
+                        },
+                        {
+                            "id": "2417c26e",
+                            "settings": {
+                                "text": "Book Appointment",
+                                "size": "md",
+                                "background_color": "#FFFFFF",
+                                "button_text_color": "#007BA7",
+                                "button_background_hover_color": "#00556B",
+                                "border_radius": {
+                                    "unit": "px",
+                                    "top": "4",
+                                    "right": "4",
+                                    "bottom": "4",
+                                    "left": "4",
+                                    "isLinked": true
+                                },
+                                "margin": {
+                                    "unit": "px",
+                                    "top": "4",
+                                    "right": "auto",
+                                    "bottom": "0",
+                                    "left": "auto",
+                                    "isLinked": false
+                                }
+                            },
+                            "elements": [],
+                            "isInner": false,
+                            "widgetType": "button",
+                            "elType": "widget"
+                        }
+                    ],
+                    "isInner": true,
+                    "elType": "container"
+                }
+            ],
+            "isInner": false,
+            "elType": "section"
+        }
+    ],
+    "page_settings": {
+        "padding": {
+            "unit": "px",
+            "top": "0",
+            "right": "0",
+            "bottom": "0",
+            "left": "0",
+            "isLinked": false
+        },
+        "background_background": "classic",
+        "background_color": "#FFFFFFFF",
+        "padding_mobile": {
+            "unit": "px",
+            "top": "0",
+            "bottom": "0",
+            "left": "0",
+            "right": "0",
+            "isLinked": false
+        }
+    },
+    "version": "0.4",
+    "title": "cta-template",
+    "type": "page"
+}

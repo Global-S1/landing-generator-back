@@ -11,6 +11,7 @@ import { EditElementContentDto } from "./interfaces";
 import { historyLanding } from "./historyLanding";
 import { updateImage, createImg } from "./img";
 import { UploadedFile } from "express-fileupload";
+import { convertToElementor } from "./exp/convertToElementor";
 
 export class LandingUseCase {
 
@@ -58,5 +59,8 @@ export class LandingUseCase {
     }
     public updateImage = async (id: string, data: { oldSrc: string, sectionId: string, file: UploadedFile }) => {
         return updateImage(this.landingRepository, id, data);
+    }
+    public converToElementor = async () => {
+        return convertToElementor()
     }
 }
