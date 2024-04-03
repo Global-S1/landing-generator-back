@@ -19,4 +19,11 @@ export class TemplateUseCase {
 
         return template;
     }
+    public findAll = async () => {
+        const templates = await this.templateRepository.findAll();
+
+        if (!templates) throw new NotFoundError('Templates not exist');
+
+        return templates;
+    }
 }

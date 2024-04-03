@@ -15,4 +15,9 @@ export class MongoTemplateRepository implements ITemplateRepository {
 
         return template
     }
+    async findAll(): Promise<TemplateEntity[] | null> {
+        const templates = await TemplateSchema.find()
+
+        return templates
+    }
 }

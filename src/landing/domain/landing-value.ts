@@ -1,11 +1,9 @@
 import { v4 as uuid } from 'uuid'
 import { LandingEntity, Sections } from './landing-entity';
 
-interface ILandingValue extends LandingEntity {
-    id?: string
-}
+interface ILandingValue extends Omit<LandingEntity, 'id'> {}
 
-export class LandingValue implements ILandingValue {
+export class LandingValue implements LandingEntity {
     id: string;
     initial_prompt: string;
     template: string;

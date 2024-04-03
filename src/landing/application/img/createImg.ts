@@ -73,6 +73,7 @@ export const createImg = async (
     const newTemplate = dom.serialize()
     const data = {
         template: newTemplate,
+        history: [...landing.history, newTemplate],
         sections
     }
 

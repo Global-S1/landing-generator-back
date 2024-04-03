@@ -29,4 +29,13 @@ export class TemplateController {
             next(error)
         }
     }
+    public getAll = async (req: Request, res: Response, next: NextFunction) => {
+        try {
+            const templates = await this.templateUseCase.findAll();
+
+            return res.status(200).json({data: templates})
+        } catch (error) {
+            next(error)
+        }
+    }
 }

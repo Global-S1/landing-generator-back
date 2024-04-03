@@ -95,6 +95,5 @@ export const createLanding = async (
     })
 
     const landing = await landingRepository.create(landingValue);
-
     return landing;
 }

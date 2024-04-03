@@ -1,4 +1,5 @@
 export interface LandingEntity {
+    id: string;
     initial_prompt: string;
     template: string;
     history: string[];

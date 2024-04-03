@@ -10,6 +10,11 @@ router.get('/:id', [
     validateFields
 ], landingCtrl.findOne)
 
+router.get('/user/:id', [
+    param('id', 'is required').notEmpty(),
+    validateFields
+], landingCtrl.findByUserId)
+
 router.post('/create', [
     body('prompt', 'prompt is required').notEmpty(),
     body('prompt', 'must be of type string').isString(),
@@ -22,14 +27,14 @@ router.put('/edit-section/:id', [
     param('id', 'is required').notEmpty(),
     body('prompt', 'prompt is required').notEmpty(),
     body('prompt', 'must be of type string').isString(),
-    body('section', 'must be of type string').isString(),
+    body('sectionId', 'must be of type string').isString(),
     validateFields
 ], landingCtrl.editSectionWithAi)
 
 router.put('/edit-template/:id', [
     param('id', 'is required').notEmpty(),
-    body('template', 'template is required is required').notEmpty(),
-    body('template', 'must be of type string').isString(),
+    body('editedTemplate', 'template is required is required').notEmpty(),
+    body('editedTemplate', 'must be of type string').isString(),
     validateFields
 ], landingCtrl.editTemplate)
 
@@ -48,7 +53,6 @@ router.get('/earlier-version/:id', [
 
 router.post('/export/:id', [
     param('id', 'is required').notEmpty(),
-    body('template', 'template is required').notEmpty(),
     validateFields
 ], landingCtrl.exportLanding)
 

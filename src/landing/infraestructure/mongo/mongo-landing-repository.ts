@@ -27,8 +27,7 @@ export class MongoLandingRepository implements ILandingRepository {
             total_tokens,
             sections
         }
-        const updatedLanding = await landingSchema.findOneAndUpdate({ landingId }, data, { new: true });
-
+        const updatedLanding = await landingSchema.findOneAndUpdate({id:landingId}, data, { new: true });
         return updatedLanding as LandingEntity;
     }
 

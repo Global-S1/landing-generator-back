@@ -17,4 +17,6 @@ router.get('/:id', [
     validateFields
 ], templateCtrl.findeOne)
 
+router.get('/', templateCtrl.getAll)
+
 export default router

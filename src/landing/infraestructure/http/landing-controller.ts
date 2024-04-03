@@ -16,6 +16,7 @@ export class LandingController {
             const landing = await this.landingUseCase.create({ user_id, template_id, prompt });
 
             return res.status(200).json({
+                id: landing?.id,
                 template: landing?.template,
                 sections: landing?.sections
             })
@@ -30,7 +31,11 @@ export class LandingController {
 
             const landing = await this.landingUseCase.findOne(id);
 
-            return res.status(200).json(landing)
+            return res.status(200).json({
+                id: landing?.id,
+                template: landing?.template,
+                sections: landing?.sections
+            })
         } catch (error) {
             next(error)
         }
@@ -38,11 +43,12 @@ export class LandingController {
 
     public findByUserId = async (req: Request, res: Response, next: NextFunction) => {
         try {
-            const { user_id } = req.body as { user_id: string };
+            //user id
+            const id = req.params.id;
 
-            const landings = await this.landingUseCase.findByUserId(user_id);
+            const landings = await this.landingUseCase.findByUserId(id);
 
-            return res.status(200).json(landings)
+            return res.status(200).json({data:landings})
         } catch (error) {
             next(error)
         }
@@ -87,7 +93,6 @@ export class LandingController {
             const data = req.body as EditElementContentDto;
 
             const landing = await this.landingUseCase.editElementContent(id, data);
-
             return res.status(200).json({
                 template: landing.template,
                 sections: landing.sections

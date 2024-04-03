@@ -56,8 +56,10 @@ export const editSectionWithAi = async (
         sections[id] = sectionElements
     })
 
+    const newTemplate = dom.serialize();
     const updatedLanding = await landingRepository.update(id, {
-        template: dom.serialize(),
+        template: newTemplate,
+        history:[...landing.history, newTemplate],
         total_tokens: landing.total_tokens + completion.usage.total_tokens,
         sections
     })

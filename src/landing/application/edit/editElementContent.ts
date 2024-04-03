@@ -82,6 +82,7 @@ export const editElementContent = async (
     const newTemplate = dom.serialize()
     const updatedLanding = await landingRepository.update(landingId, {
         template: newTemplate,
+        history:[...landing.history, newTemplate],
         sections
     })
 

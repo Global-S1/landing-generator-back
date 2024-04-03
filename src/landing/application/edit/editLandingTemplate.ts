@@ -1,4 +1,5 @@
 import { getElementInfo, getSectionsFromLanding } from "../../../helpers";
+import { NotFoundError } from "../../../utils/errors";
 import { ElementToEdit, ILandingRepository } from "../../domain";
 import { JSDOM } from 'jsdom';
 
@@ -10,6 +11,10 @@ export const editLandingTemplate = async (
     landingRepository: ILandingRepository,
     { id, editedTemplate }: Args
 ) => {
+
+    const landing = await landingRepository.findOneById(id);
+    if (!landing) throw new NotFoundError('landing not exist');
+
     const dom = new JSDOM(editedTemplate)
     const document = dom.window.document
 
@@ -26,8 +31,12 @@ export const editLandingTemplate = async (
 
         sections[id] = sectionElements
     })
+const newTemplate = dom.serialize();
+    const updatedLanding = await landingRepository.update(id, { 
+        sections, 
+        template: newTemplate,
+        history:[...landing.history, newTemplate],
+     })
 
-    const landing = await landingRepository.update(id, { sections, template: dom.serialize() })
-
-    return landing
+    return updatedLanding
 };

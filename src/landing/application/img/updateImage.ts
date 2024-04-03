@@ -62,6 +62,7 @@ export const updateImage = async (
     const newTemplate = dom.serialize()
     const data = {
         template: newTemplate,
+        history: [...landing.history, newTemplate],
         sections
     }
 
