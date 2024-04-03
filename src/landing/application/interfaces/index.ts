@@ -1,4 +1,4 @@
-export interface EditElementContentDto{
+export interface EditElementContentDto {
     sectionId: string;
     tagName: string;
     oldText: string;
@@ -13,21 +13,21 @@ export interface EditElementContentDto{
     }
 }
 
-interface OldImgValues{
+interface OldImgValues {
     src: string;
     alt: string;
 }
 
-interface NewImgValues{
+interface NewImgValues {
     src: string;
     alt: string;
 }
-interface OldLinkValues{
+interface OldLinkValues {
     text: string;
     href: string;
 }
 
-interface NewLinkValues{
+interface NewLinkValues {
     text: string;
     href: string;
 }

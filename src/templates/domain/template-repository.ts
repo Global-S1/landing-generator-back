@@ -1,6 +1,6 @@
 import { TemplateEntity } from "./template-entity";
 
-export interface TemplateRepository{
+export interface ITemplateRepository {
     save: (template: TemplateEntity) => Promise<TemplateEntity | null>;
 
     findById: (id: string) => Promise<TemplateEntity | null>;

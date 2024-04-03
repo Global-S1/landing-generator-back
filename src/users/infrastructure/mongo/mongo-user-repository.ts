@@ -1,12 +1,11 @@
 import bcryptjs from 'bcryptjs';
-import { type UserEntity } from '../../domain/user-entity';
-import { type UserRepository } from '../../domain/user-repository';
+import { UserEntity, IUserRepository } from '../../domain';
 import UserSchema from './user-schema';
 
-export class MongoUserRepository implements UserRepository {
+export class MongoUserRepository implements IUserRepository {
 	private static instance: MongoUserRepository | null = null;
 
-	private constructor() {}
+	private constructor() { }
 
 	static getInstance() {
 		if (!MongoUserRepository.instance) {

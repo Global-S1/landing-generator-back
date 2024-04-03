@@ -1,19 +1,17 @@
 import bcryptjs from 'bcryptjs';
-import { type CreateUserDto, type LoginUserDto } from '../domain/user-dto';
-import { type UserRepository } from '../domain/user-repository';
-import { UserValue } from '../domain/user-value';
+import { UserValue, IUserRepository, CreateUserDto, LoginUserDto } from '../domain';
 import { NotFoundError, ValidationError } from '../../utils/errors';
 // import { generateJWT } from '../../helpers/generate-jwt';
 
 export class UserUseCase {
-	constructor(private readonly userRepository: UserRepository) {}
+	constructor(private readonly userRepository: IUserRepository) { }
 
 	public register = async (newUser: CreateUserDto) => {
 		const userValue = new UserValue(newUser);
 
 		const emailExist = await this.userRepository.findByEmail(userValue.email);
 
-		if (emailExist) throw new ValidationError('El email ya está registrado');
+		if (emailExist) throw new ValidationError('The email is already registered');
 
 		const user = await this.userRepository.create(userValue);
 

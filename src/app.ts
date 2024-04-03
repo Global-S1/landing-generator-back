@@ -1,23 +1,24 @@
 import os from 'os';
 
-import dotenv from 'dotenv'
-import express from 'express'
-import fileUpload from 'express-fileupload'
-import cors from 'cors'
+import dotenv from 'dotenv';
+import express from 'express';
+import fileUpload from 'express-fileupload';
+import cors from 'cors';
 
 import { errorHandler } from './middlewares/errorHandler';
 import { connectDb } from './db/connect';
 
 import authRoutes from './users/infrastructure/http/auth-route';
-import landingRoutes from "./landing/router/landingRoutes";
+import templateRoutes from './templates/infraestructure/http/template-route';
+import landingRoutes from './landing/infraestructure/http/landing-route';
 
-dotenv.config()
+dotenv.config();
 
 const app = express();
-const PORT = process.env.PORT || 3000
+const PORT = process.env.PORT || 3000;
 const tempDir = os.tmpdir();
 
-connectDb()
+connectDb();
 
 app.use(cors())
 app.use(express.json())
@@ -27,6 +28,7 @@ app.use(fileUpload({
 }))
 
 app.use('/api/landing', landingRoutes)
+app.use('/api/template', templateRoutes)
 app.use('/api/auth', authRoutes)
 
 app.use(errorHandler)
