@@ -187,4 +187,14 @@ export class LandingController {
             next(error)
         }
     }
+    public prepareData = async (req: Request, res: Response, next: NextFunction) => {
+        try {
+          
+            const data = await this.landingUseCase.prepareData()
+
+            return res.status(200).json({data})
+        } catch (error) {
+            next(error)
+        }
+    }
 }

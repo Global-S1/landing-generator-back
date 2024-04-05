@@ -11,7 +11,7 @@ import { EditElementContentDto } from "./interfaces";
 import { historyLanding } from "./historyLanding";
 import { updateImage, createImg } from "./img";
 import { UploadedFile } from "express-fileupload";
-import { convertToElementor } from "./exp/convertToElementor";
+import { prepareData, convertToElementor } from "./exp";
 
 export class LandingUseCase {
 
@@ -62,5 +62,8 @@ export class LandingUseCase {
     }
     public converToElementor = async () => {
         return convertToElementor()
+    }
+    public prepareData = async () => {
+        return prepareData()
     }
 }

@@ -73,5 +73,6 @@ router.post('/images/upload/:id', [
 ], landingCtrl.uploadImg)
 
 router.get('/exp/convert', landingCtrl.convertToElementor)
+router.get('/exp/prepare', landingCtrl.prepareData)
 
 export default router
