@@ -220,4 +220,15 @@ export class LandingController {
             next(error)
         }
     }
+    public tuneCompletion = async (req: Request, res: Response, next: NextFunction) => {
+        try {
+            const { html } = req.body as { html: string }
+            const data = await this.landingUseCase.tuneCompletion(html)
+
+            return res.status(200).json(data)
+        } catch (error) {
+            console.log(error)
+            next(error)
+        }
+    }
 }
