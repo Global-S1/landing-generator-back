@@ -11,7 +11,7 @@ import { EditElementContentDto } from "./interfaces";
 import { historyLanding } from "./historyLanding";
 import { updateImage, createImg } from "./img";
 import { UploadedFile } from "express-fileupload";
-import { prepareData, convertToElementor } from "./exp";
+import { prepareData, convertToElementor, fineTuning, uploadFileOpenai, } from "./exp";
 
 export class LandingUseCase {
 
@@ -65,5 +65,11 @@ export class LandingUseCase {
     }
     public prepareData = async () => {
         return prepareData()
+    }
+    public uploadTuneFile = async () => {
+        return uploadFileOpenai();
+    }
+    public fineTuning = async () => {
+        return fineTuning()
     }
 }

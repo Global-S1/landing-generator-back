@@ -2,6 +2,8 @@ import fs from 'fs';
 import path from 'path';
 import { DataSetFormat } from '../../../interfaces';
 
+const trainingFilePath = path.join(__dirname, '/training_file.jsonl')
+
 export const prepareData = async () => {
     const dataDirectory = path.join(__dirname, '/data/')
 
@@ -9,40 +11,47 @@ export const prepareData = async () => {
 
     fs.readdirSync(dataDirectory).forEach(folderName => dataFolderPaths.push(`${dataDirectory}/${folderName}`));
 
-    const dataFiles = fs.readdirSync(dataFolderPaths[0])
+    for (const dataPath of dataFolderPaths) {
+        const dataFiles = fs.readdirSync(dataPath)
+        // [ 'hero-t2.json', 'hero.html' ]
 
-    console.log(dataFiles)
-    // [ 'hero-t2.json', 'hero.html' ]
+        const SYSTEM_PROMPT = `You are an expert creating json templates for Elemetor Wordpress.
+        The user provildes you eith a styleed HTML section using tailwind and you convert this html to the Elementor template version
 
+        - Pay closee attention to each tailwind class in HTML element to adapt these sytle in Elementor template
+        - Generate the response without extra text, you will only response the template, and then parse the response and save the json in a file.
+        - Do not include markdown "\`\`\`" or "\`\`\`json" at the start or end.`
 
-    const SYSTEM_PROMPT = 'You are an expert developer'
-    let USER_PROMPT = ''
-    let ASSISTANT_PROMPT = ''
+        let USER_PROMPT = ''
+        let ASSISTANT_PROMPT = ''
 
-    await Promise.all(dataFiles.map(async (fileName) => {
+        for (const fileName of dataFiles) {
+            const filePath = path.join(dataPath, fileName);
+            const fileContent = fs.readFileSync(filePath, 'utf-8')
 
-        const mime = fileName.split('.')[1]
-        console.log(mime)
-        const filePath = path.join(dataFolderPaths[0], fileName);
-        const fileContent = await fs.promises.readFile(filePath, 'utf-8');
-
-        if(mime === 'html'){
-            USER_PROMPT = fileContent
+            const mime = fileName.split('.')[1]
+            if (mime === 'html') {
+                USER_PROMPT = fileContent
+            }
+            if (mime === 'json') {
+                ASSISTANT_PROMPT = fileContent
+            }
         }
-        if(mime === 'json'){
-            ASSISTANT_PROMPT = fileContent
+        const requiredDataFormat: DataSetFormat = {
+            messages: [
+                { role: 'system', content: SYSTEM_PROMPT },
+                { role: 'user', content: USER_PROMPT },
+                { role: 'assistant', content: ASSISTANT_PROMPT }
+            ]
         }
-    }));
 
+        const jsonData = JSON.stringify(requiredDataFormat);
+        // Agregar una nueva línea al final del JSON para separar cada dato
+        const jsonlData = jsonData + '\n';
 
-
-    const dataElement: DataSetFormat = {
-        messages: [
-            { role: 'system', content: SYSTEM_PROMPT },
-            { role: 'user', content: USER_PROMPT },
-            { role: 'assistant', content: ASSISTANT_PROMPT }
-        ]
+        // Escribir la línea JSONL en el archivo
+        fs.appendFileSync(trainingFilePath, jsonlData);
     }
 
-    return dataElement
-} 
+    return 'preparing'
+}

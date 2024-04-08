@@ -23,6 +23,7 @@
     "express-validator": "^7.0.1",
     "jsdom": "^24.0.0",
     "mongoose": "^8.2.4",
+    "openai": "^4.0.0",
     "uuid": "^9.0.1"
   },
   "devDependencies": {

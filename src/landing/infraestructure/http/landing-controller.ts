@@ -48,7 +48,7 @@ export class LandingController {
 
             const landings = await this.landingUseCase.findByUserId(id);
 
-            return res.status(200).json({data:landings})
+            return res.status(200).json({ data: landings })
         } catch (error) {
             next(error)
         }
@@ -179,7 +179,7 @@ export class LandingController {
     }
     public convertToElementor = async (req: Request, res: Response, next: NextFunction) => {
         try {
-          
+
             const template = await this.landingUseCase.converToElementor()
 
             return res.status(200).json(template)
@@ -189,11 +189,34 @@ export class LandingController {
     }
     public prepareData = async (req: Request, res: Response, next: NextFunction) => {
         try {
-          
+
             const data = await this.landingUseCase.prepareData()
 
-            return res.status(200).json({data})
+            return res.status(200).json({ data })
         } catch (error) {
+            next(error)
+        }
+    }
+
+    public uploadTuneFile = async (req: Request, res: Response, next: NextFunction) => {
+        try {
+
+            const data = await this.landingUseCase.uploadTuneFile()
+
+            return res.status(200).json({ data })
+        } catch (error) {
+            console.log(error)
+            next(error)
+        }
+    }
+    public fineTuning = async (req: Request, res: Response, next: NextFunction) => {
+        try {
+
+            const data = await this.landingUseCase.fineTuning()
+
+            return res.status(200).json({ data })
+        } catch (error) {
+            console.log(error)
             next(error)
         }
     }

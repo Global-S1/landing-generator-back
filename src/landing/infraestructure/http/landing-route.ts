@@ -74,5 +74,7 @@ router.post('/images/upload/:id', [
 
 router.get('/exp/convert', landingCtrl.convertToElementor)
 router.get('/exp/prepare', landingCtrl.prepareData)
+router.post('/exp/upload-tune', landingCtrl.uploadTuneFile)
+router.post('/exp/fine-tune', landingCtrl.fineTuning)
 
 export default router
