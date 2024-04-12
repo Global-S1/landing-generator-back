@@ -26,9 +26,9 @@ export class LandingController {
     }
     public createAi = async (req: Request, res: Response, next: NextFunction) => {
         try {
-            const msg = await this.landingUseCase.createAi()
+            const data = await this.landingUseCase.createAi()
 
-            return res.status(200).json({ msg })
+            return res.status(200).json(data)
         } catch (error) {
             next(error)
         }

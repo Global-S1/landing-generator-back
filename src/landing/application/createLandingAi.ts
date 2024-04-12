@@ -20,24 +20,29 @@ const html = `<!DOCTYPE html>
 export const createLandingAi = async () => {
 
     const prompt = 'Landing para un fast food llamado sabrocito';
-    const sectionsId: SectionType[] = ['header', 'hero', 'about', 'features', 'faq', 'cta', 'footer'];
+    const sectionsId: SectionType[] = ['header', 'hero', 'features', 'about', 'faq', 'cta', 'footer'];
 
     const dom = new JSDOM(html);
     const document = dom.window.document;
 
+    let total_tokens_createBase = 0
+    let total_tokens_createContent = 0
+
     for (const section of sectionsId) {
 
         const SYSTEM_PROMPT = `You are an expert landing page developer using HTML with a tailwind.
-        The user will ask you to generate the html of the "${section}" section of a landing page, create this section considering that the landing page has these: ${sectionsId}
-
-        Use semantic tags for each sections and tags. 
+        The user will ask you to generate a HTML section of a landing page, create this section considering that the landing page has these: ${sectionsId}
+        
+        Use semantic tags for each section and tag.
+        Generate responsive layouts. 
+        add the id attribute to this generated section, the value should be "${section}".
         Just deliver the code, do not generate extra text or explanations.
         DO NOT include markdown "\`\`\`" or "\`\`\`html" at the start or end.
         Use placeholder images from https://placehold.co and include a detailed description of the image in the alt text so that an image generation AI can generate the image later.`;
 
         const USER_PROMPT = `I want to create the html template for the "${section}" section of a landing page.`;
 
-        const completion = await chatCompletion({ system_prompt: SYSTEM_PROMPT, user_prompt: USER_PROMPT, model: 'gpt-4-0125-preview' });
+        const completion = await chatCompletion({ system_prompt: SYSTEM_PROMPT, user_prompt: USER_PROMPT, model: 'gpt-3.5-turbo' });
         if (completion.error) {
             continue;
         }
@@ -45,17 +50,19 @@ export const createLandingAi = async () => {
 
         const newSection = completion.choices[0].message.content;
 
-        document.body.outerHTML += newSection
+        total_tokens_createBase += completion.usage.total_tokens;
+        document.body.innerHTML += newSection;
     }
 
     for (const section of sectionsId) {
 
         const $oldSection = document.getElementById(section);
+        if (!$oldSection) continue
 
         const SYSTEM_PROMPT = `You are an expert landing page developer using HTML with a tailwind.
-        The user will tell you the description of their landing page and you will generate the html content of this section: ${section}.
+        The user will tell you the description of their landing page and you will generate the html content of the section "${section}".
         This is the template of the section ${$oldSection?.outerHTML}
-        The template have these sections: ${sectionsId}
+        The landing page have these sections: ${sectionsId}
 
         The content must be in the Spanish language
         Returns the template that with the respective change in the section. 
@@ -70,18 +77,24 @@ export const createLandingAi = async () => {
         if (completion.error) {
             break;
         }
+
         console.log(section, 'content')
 
         const newSection = completion.choices[0].message.content;
 
         if ($oldSection) {
+
+            total_tokens_createContent += completion.usage.total_tokens;
             $oldSection.outerHTML = newSection;
         }
-
     }
-
+    
     const directoryPath = path.join(__dirname, '/')
     customWriteFile({ directoryPath, fileName: 'template', content: dom.serialize(), mime: 'html' })
 
-    return 'create landing with AI'
+    return {
+        msg: 'create landing page ai',
+        total_tokens_1: total_tokens_createBase,
+        total_tokens_2: total_tokens_createContent,
+    }
 }
