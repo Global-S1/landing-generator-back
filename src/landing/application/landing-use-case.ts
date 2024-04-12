@@ -12,6 +12,7 @@ import { historyLanding } from "./historyLanding";
 import { updateImage, createImg } from "./img";
 import { UploadedFile } from "express-fileupload";
 import { prepareData, convertToElementor, fineTuning, uploadFileOpenai, tuneModelCompletion, } from "./exp";
+import { createLandingAi } from "./createLandingAi";
 
 export class LandingUseCase {
 
@@ -28,6 +29,9 @@ export class LandingUseCase {
             this.landingRepository,
             { user_id, template_id, prompt }
         );
+    }
+    public createAi = async () => {
+        return createLandingAi()
     }
 
     public findOne = async (id: string) => {

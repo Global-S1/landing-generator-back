@@ -22,6 +22,7 @@ router.post('/create', [
     body('template_id', 'must be of type string').isString(),
     validateFields
 ], landingCtrl.create)
+router.post('/create-ai', landingCtrl.createAi)
 
 router.put('/edit-section/:id', [
     param('id', 'is required').notEmpty(),

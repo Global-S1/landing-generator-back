@@ -47,19 +47,19 @@ export const tuneModelCompletion = async (html: string) => {
     - Pay closee attention to each tailwind class in HTML element to adapt these sytle in Elementor template
     - Generate the response without extra text, you will only response the template, and then parse the response and save the json in a file.
     - Do not include markdown "\`\`\`" or "\`\`\`json" at the start or end.`
-    
+
     let USER_PROMPT = html
 
     const completion = await openai.chat.completions.create({
         // messages,
         messages: [
-            { role: "system", content: SYSTEM_PROMPT}, 
-            {role: 'user', content: USER_PROMPT}
+            { role: "system", content: SYSTEM_PROMPT },
+            { role: 'user', content: USER_PROMPT }
         ],
-        model:'ft:gpt-3.5-turbo-0125:personal:html-to-elementor:9BUkPRp9'
+        model: 'ft:gpt-3.5-turbo-0125:personal:html-to-elementor:9BUkPRp9'
     })
 
-    if(!completion) return completion
+    if (!completion) return completion
 
     const template = completion.choices[0].message.content ?? ''
 

@@ -24,6 +24,15 @@ export class LandingController {
             next(error)
         }
     }
+    public createAi = async (req: Request, res: Response, next: NextFunction) => {
+        try {
+            const msg = await this.landingUseCase.createAi()
+
+            return res.status(200).json({ msg })
+        } catch (error) {
+            next(error)
+        }
+    }
 
     public findOne = async (req: Request, res: Response, next: NextFunction) => {
         try {
