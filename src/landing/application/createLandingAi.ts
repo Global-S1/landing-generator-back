@@ -36,7 +36,8 @@ export const createLandingAi = async (
     if (!user) throw new NotFoundError('user not exist');
 
     const userPrompt = prompt;
-    const sectionsId: SectionType[] = ['header', 'hero', 'features', 'about', 'faq', 'cta', 'footer'];
+    // const sectionsId: SectionType[] = ['header', 'hero', 'features', 'about', 'faq', 'cta', 'footer'];
+    const sectionsId: SectionType[] = ['header', 'hero', 'features', 'about', 'faq', 'cta','testimonials', 'contact', 'footer'];
 
     const dom = new JSDOM(html);
     const document = dom.window.document;
@@ -47,12 +48,13 @@ export const createLandingAi = async (
     for (const section of sectionsId) {
         const SYSTEM_PROMPT = `You are an expert landing page developer using HTML with a tailwind.
         The user will ask you to generate a HTML section of a landing page, create this section considering that the landing page has these: ${sectionsId}.
-        Use semantic tags for each section and tag.
-        Generate responsive layouts. 
-        add the id attribute to this generated section, the value should be "${section}".
-        Just deliver the code, do not generate extra text or explanations.
-        DO NOT include markdown "\`\`\`" or "\`\`\`html" at the start or end.
-        Use placeholder images from https://placehold.co and include a detailed description of the image in the alt text so that an image generation AI can generate the image later.`;
+        - Use semantic tags for each section and tag.
+        - Generate the design with a minimalist style.
+        - Generate responsive layouts. 
+        - add the id attribute to this generated section, the value should be "${section}".
+        - Just deliver the code, do not generate extra text or explanations.
+        - DO NOT include markdown "\`\`\`" or "\`\`\`html" at the start or end.
+        - Use placeholder images from https://placehold.co and include a detailed description of the image in the alt text so that an image generation AI can generate the image later.`;
 
         const USER_PROMPT = `I want to create the html template for the "${section}" section of a landing page.`;
 
@@ -130,37 +132,5 @@ export const createLandingAi = async (
 
     const landing = await landingRepository.create(landingValue);
     return landing;
-
-}
-
-export const recursionDom = async () => {
-
-    const templatePath = path.join(__dirname, '/test.html');
-
-    const html = fs.readFileSync(templatePath, 'utf-8');
-
-    const dom = new JSDOM(html);
-    const document = dom.window.document;
-
-    //* Agregar objeto con los elementos de las secciones
-    const sections: { [id: string]: ElementToEdit[] } = {};
-
-    const sectionsId: SectionType[] = ['header', 'hero', 'features', 'about', 'faq', 'cta', 'footer'];
-
-    sectionsId.forEach(id => {
-
-        const sectionDOM = document.getElementById(id);
-        const sectionElements: ElementToEdit[] = [];
-        if (sectionDOM) {
-            getElementInfo(sectionDOM, sectionElements);
-        }
-
-        sections[id] = sectionElements;
-    })
-    const directoryPath = path.join(__dirname, '/')
-    customWriteFile({ directoryPath, fileName: 'template', content: dom.serialize(), mime: 'html' })
-    // customWriteFile({ directoryPath, fileName: 'template', content: JSON.stringify(sections), mime: 'json' })
-
-    return sections
 
 }

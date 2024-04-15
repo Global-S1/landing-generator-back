@@ -3,7 +3,7 @@ import path from 'path';
 import { NextFunction, type Request, type Response } from 'express';
 import { UploadedFile } from 'express-fileupload';
 import { LandingUseCase } from "../../application/landing-use-case";
-import { EditElementContentDto, EditElementContentTestDto } from '../../application/interfaces';
+import { EditElementContentDto } from '../../application/interfaces';
 import { customWriteFile } from '../../../helpers';
 
 export class LandingController {
@@ -104,7 +104,7 @@ export class LandingController {
 
     public editElementContent = async (req: Request, res: Response, next: NextFunction) => {
         try {
-            const id = req.params.id;
+            const id = req.params.id
             const data = req.body as EditElementContentDto;
 
             const landing = await this.landingUseCase.editElementContent(id, data);
@@ -117,20 +117,6 @@ export class LandingController {
         }
     }
 
-    public editElement = async (req: Request, res: Response, next: NextFunction) => {
-        try {
-            const id = req.params.id;
-            const data = req.body as EditElementContentTestDto;
-
-            const landing = await this.landingUseCase.editElement(id, data);
-            return res.status(200).json({
-                template: landing?.template,
-                sections: landing?.sections
-            })
-        } catch (error) {
-            next(error)
-        }
-    }
 
     public earlierVersion = async (req: Request, res: Response, next: NextFunction) => {
         try {
@@ -194,10 +180,10 @@ export class LandingController {
     public uploadImg = async (req: Request, res: Response, next: NextFunction) => {
         try {
             const id = req.params.id;
-            const { oldSrc, sectionId } = req.query as { oldSrc: string, sectionId: string }
+            const { data_id, sectionId } = req.query as { data_id: string, sectionId: string }
             const { file } = req.files as { file: UploadedFile }
 
-            const landing = await this.landingUseCase.updateImage(id, { oldSrc, sectionId, file })
+            const landing = await this.landingUseCase.updateImage(id, { data_id, sectionId, file })
 
             return res.status(200).json({
                 template: landing.template,

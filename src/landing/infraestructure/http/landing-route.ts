@@ -48,18 +48,9 @@ router.put('/edit-template/:id', [
 router.put('/edit-element/:id', [
     param('id', 'is required').notEmpty(),
     body('sectionId', 'must be required').isString(),
-    body('tagName', 'must be required').isString(),
-    validateFields
-], landingCtrl.editElementContent)
-
-router.put('/edit-element-text/:id', [
-    param('id', 'is required').notEmpty(),
-    body('sectionId', 'must be required').isString(),
-    body('tagName', 'must be required').isString(),
-    body('newText', 'must be required').isString(),
     body('data_id', 'must be required').isString(),
     validateFields
-], landingCtrl.editElement)
+], landingCtrl.editElementContent)
 
 
 router.get('/earlier-version/:id', [
@@ -82,7 +73,7 @@ router.post('/images/create/:id', [
 
 router.post('/images/upload/:id', [
     param('id', 'is required').notEmpty(),
-    query('oldSrc', 'must be required').isString(),
+    query('data_id', 'must be required').isString(),
     query('sectionId', 'must be required').isString(),
     validateFile(['png', 'jpg', 'jpeg']),
     validateFields

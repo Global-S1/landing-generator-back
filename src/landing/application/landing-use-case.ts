@@ -6,8 +6,8 @@ import { findOneLanding } from './find/findOneLanding';
 import { findLandingsByUserId } from './find/findLandingsByUserId';
 import { editSectionWithAi } from './edit/editSectionWithAi';
 import { editLandingTemplate } from "./edit/editLandingTemplate";
-import { editElementContent, editElementText } from './edit/editElementContent';
-import { EditElementContentDto, EditElementContentTestDto } from "./interfaces";
+import { editElementContent } from './edit/editElementContent';
+import { EditElementContentDto } from "./interfaces";
 import { historyLanding } from "./historyLanding";
 import { updateImage, createImg } from "./img";
 import { UploadedFile } from "express-fileupload";
@@ -53,9 +53,6 @@ export class LandingUseCase {
     public editElementContent = async (id: string, data: EditElementContentDto) => {
         return editElementContent(this.landingRepository, id, data);
     }
-    public editElement = async (id: string, data: EditElementContentTestDto) => {
-        return editElementText(this.landingRepository, id, data);
-    }
 
     public earlierVersion = async (id: string) => {
         return historyLanding(this.landingRepository, id);
@@ -64,7 +61,7 @@ export class LandingUseCase {
     public createImgAi = async (id: string, data: { prompt: string, oldSrc: string, sectionId: string }) => {
         return createImg(this.landingRepository, id, data);
     }
-    public updateImage = async (id: string, data: { oldSrc: string, sectionId: string, file: UploadedFile }) => {
+    public updateImage = async (id: string, data: { data_id: string, sectionId: string, file: UploadedFile }) => {
         return updateImage(this.landingRepository, id, data);
     }
     public prepareData = async () => {

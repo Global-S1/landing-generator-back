@@ -16,7 +16,7 @@ const CLOUDINARY_FOLDER = 'LANDING-AI'
 export const updateImage = async (
     landingRepository: ILandingRepository,
     id: string,
-    { oldSrc, sectionId, file }: { oldSrc: string, sectionId: string, file: UploadedFile },
+    { data_id, sectionId, file }: { data_id: string, sectionId: string, file: UploadedFile },
 ) => {
 
     const landing = await landingRepository.findOneById(id);
@@ -28,37 +28,32 @@ export const updateImage = async (
     const document = dom.window.document;
     const sections = landing.sections;
     const section = document.getElementById(sectionId);
-    const $elements = section?.querySelectorAll('img');
+    const $element = section?.querySelector(`[data-id="${data_id}"]`)
 
-    if ($elements) {
-        for (const element of $elements) {
-            const src = element.getAttribute('src');
+    const oldSrc = $element?.getAttribute('src') ?? '';
 
-            if (oldSrc === src) {
-                // Subir imagen a cloudinary
-                const cloudinaryResponse = await cloudinary.uploader.upload(tempFilePath, {
-                    folder: CLOUDINARY_FOLDER
-                })
-                const urlImage = cloudinaryResponse.secure_url
+    // Subir imagen a cloudinary
+    const cloudinaryResponse = await cloudinary.uploader.upload(tempFilePath, {
+        folder: CLOUDINARY_FOLDER
+    })
+    const urlImage = cloudinaryResponse.secure_url
 
-                // Eliminar imagen de cloudinary
-                const nameArr = oldSrc.split("/");
-                const name = nameArr[nameArr.length - 1];
-                const [public_id] = name.split(".");
-                if (nameArr.includes(CLOUDINARY_FOLDER)) {
-                    await cloudinary.uploader.destroy(`${CLOUDINARY_FOLDER}/${public_id}`);
-                }
-
-                element.setAttribute("src", urlImage)
-                sections[sectionId].forEach(element => {
-                    if (element.attributes['src'] === oldSrc) {
-                        element.attributes['src'] = urlImage;
-                    }
-                })
-            }
-        }
+    // Eliminar imagen de cloudinary
+    const nameArr = oldSrc.split("/");
+    const name = nameArr[nameArr.length - 1];
+    const [public_id] = name.split(".");
+    if (nameArr.includes(CLOUDINARY_FOLDER)) {
+        await cloudinary.uploader.destroy(`${CLOUDINARY_FOLDER}/${public_id}`);
     }
 
+    $element!.setAttribute("src", urlImage)
+    sections[sectionId].forEach(element => {
+
+        if (element.id === data_id) {
+            element.attributes['src'] = urlImage;
+        }
+    })
+    
     const newTemplate = dom.serialize()
     const data = {
         template: newTemplate,
