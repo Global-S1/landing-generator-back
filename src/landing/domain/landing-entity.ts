@@ -1,5 +1,6 @@
 export interface LandingEntity {
     id: string;
+    title: string;
     initial_prompt: string;
     template: string;
     history: string[];
@@ -18,4 +19,5 @@ export interface ElementToEdit {
     type: string;
     text: string;
     attributes: { [key: string]: string };
+    // status: true | false
 }

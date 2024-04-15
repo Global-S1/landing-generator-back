@@ -15,16 +15,9 @@ router.get('/user/:id', [
     validateFields
 ], landingCtrl.findByUserId)
 
-router.post('/create', [
-    body('prompt', 'prompt is required').notEmpty(),
-    body('prompt', 'must be of type string').isString(),
-    body('user_id', 'must be of type string').isString(),
-    body('template_id', 'must be of type string').isString(),
-    validateFields
-], landingCtrl.create)
-
 router.post('/create-ai', [
     body('prompt', 'prompt is required').notEmpty(),
+    body('title', 'title is required').notEmpty(),
     body('prompt', 'must be of type string').isString(),
     body('user_id', 'must be of type string').isString(),
     validateFields

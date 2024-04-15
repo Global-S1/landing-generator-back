@@ -5,6 +5,7 @@ interface ILandingValue extends Omit<LandingEntity, 'id'> {}
 
 export class LandingValue implements LandingEntity {
     id: string;
+    title: string;
     initial_prompt: string;
     template: string;
     history: string[];
@@ -14,6 +15,7 @@ export class LandingValue implements LandingEntity {
     user_id: string;
 
     constructor({
+        title,
         initial_prompt,
         template,
         history,
@@ -22,6 +24,7 @@ export class LandingValue implements LandingEntity {
         user_id
     }: ILandingValue) {
         this.id = uuid();
+        this.title = title;
         this.initial_prompt = initial_prompt;
         this.template = template;
         this.history = history;

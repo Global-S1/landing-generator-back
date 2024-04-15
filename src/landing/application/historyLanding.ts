@@ -10,9 +10,9 @@ export const historyLanding = async (landingRepository: ILandingRepository, id: 
     if (!landing) throw new NotFoundError('landing not exist');
 
     const newHistory = landing.history.slice(0, -1);
-    const newTemplate = newHistory[newHistory.length - 1];
+    const lastTemplate = newHistory[newHistory.length - 1];
 
-    const dom = new JSDOM(newTemplate);
+    const dom = new JSDOM(lastTemplate);
     const document = dom.window.document;
 
     const sections: { [id: string]: ElementToEdit[] } = {};
@@ -30,7 +30,7 @@ export const historyLanding = async (landingRepository: ILandingRepository, id: 
 
     const newData = {
         history: [...newHistory],
-        template: newTemplate,
+        template: dom.serialize(),
         sections
     }
 

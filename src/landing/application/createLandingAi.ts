@@ -7,7 +7,6 @@ import { customWriteFile, getElementInfo } from "../../helpers";
 import { IUserRepository } from '../../users/domain';
 import { NotFoundError } from '../../utils/errors';
 import { ElementToEdit, ILandingRepository, LandingValue } from '../domain';
-import fs from 'fs';
 
 const html = `<!DOCTYPE html>
 <html lang="en">
@@ -23,13 +22,14 @@ const html = `<!DOCTYPE html>
 
 interface Args {
     user_id: string;
-    prompt: string
+    prompt: string;
+    title: string;
 }
 
 export const createLandingAi = async (
     userRepository: IUserRepository,
     landingRepository: ILandingRepository,
-    { user_id, prompt }: Args
+    { user_id, prompt, title }: Args
 ) => {
 
     const user = await userRepository.findByUid(user_id);
@@ -37,7 +37,7 @@ export const createLandingAi = async (
 
     const userPrompt = prompt;
     // const sectionsId: SectionType[] = ['header', 'hero', 'features', 'about', 'faq', 'cta', 'footer'];
-    const sectionsId: SectionType[] = ['header', 'hero', 'features', 'about', 'faq', 'cta','testimonials', 'contact', 'footer'];
+    const sectionsId: SectionType[] = ['header', 'hero', 'features', 'about', 'faq', 'cta','testimonials', 'pricing', 'contact', 'footer'];
 
     const dom = new JSDOM(html);
     const document = dom.window.document;
@@ -50,6 +50,7 @@ export const createLandingAi = async (
         The user will ask you to generate a HTML section of a landing page, create this section considering that the landing page has these: ${sectionsId}.
         - Use semantic tags for each section and tag.
         - Generate the design with a minimalist style.
+        - titulos principales( h1 - h2 ) y botones tendran un color verde, los subtitulos y el texto de color negro y el fondo de color blanco.
         - Generate responsive layouts. 
         - add the id attribute to this generated section, the value should be "${section}".
         - Just deliver the code, do not generate extra text or explanations.
@@ -122,6 +123,7 @@ export const createLandingAi = async (
 
     const total_tokens = total_tokens_createBase + total_tokens_createContent
     const landingValue = new LandingValue({
+        title,
         initial_prompt: prompt,
         template: dom.serialize(),
         history: [dom.serialize()],

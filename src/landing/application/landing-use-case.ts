@@ -1,7 +1,6 @@
 import { ITemplateRepository } from "../../templates/domain";
 import { IUserRepository } from "../../users/domain";
 import { ILandingRepository } from "../domain";
-import { createLanding } from './createLanding';
 import { findOneLanding } from './find/findOneLanding';
 import { findLandingsByUserId } from './find/findLandingsByUserId';
 import { editSectionWithAi } from './edit/editSectionWithAi';
@@ -13,6 +12,7 @@ import { updateImage, createImg } from "./img";
 import { UploadedFile } from "express-fileupload";
 import { prepareData, fineTuning, uploadFileOpenai, tuneModelCompletion, } from "./exp";
 import { createLandingAi } from "./createLandingAi";
+import { CreateLandingDto } from "../domain/landing-dto";
 
 export class LandingUseCase {
 
@@ -22,16 +22,8 @@ export class LandingUseCase {
         private readonly landingRepository: ILandingRepository
     ) { }
 
-    public create = async ({ user_id, template_id, prompt }: { user_id: string, template_id: string, prompt: string }) => {
-        return createLanding(
-            this.userRepository,
-            this.templateRepository,
-            this.landingRepository,
-            { user_id, template_id, prompt }
-        );
-    }
-    public createAi = async ({ user_id, prompt }: { user_id: string, prompt: string }) => {
-        return createLandingAi(this.userRepository, this.landingRepository, { user_id, prompt })
+    public createAi = async (data: CreateLandingDto) => {
+        return createLandingAi(this.userRepository, this.landingRepository, data)
     }
 
     public findOne = async (id: string) => {

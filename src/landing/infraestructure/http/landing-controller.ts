@@ -5,33 +5,20 @@ import { UploadedFile } from 'express-fileupload';
 import { LandingUseCase } from "../../application/landing-use-case";
 import { EditElementContentDto } from '../../application/interfaces';
 import { customWriteFile } from '../../../helpers';
+import { CreateLandingDto } from '../../domain';
 
 export class LandingController {
 
     constructor(private readonly landingUseCase: LandingUseCase) { }
 
-    public create = async (req: Request, res: Response, next: NextFunction) => {
-        const { prompt, user_id, template_id } = req.body as { prompt: string, user_id: string, template_id: string };
-        try {
-            const landing = await this.landingUseCase.create({ user_id, template_id, prompt });
-
-            return res.status(200).json({
-                id: landing?.id,
-                template: landing?.template,
-                sections: landing?.sections
-            })
-        } catch (error) {
-            next(error)
-        }
-    }
     public createAi = async (req: Request, res: Response, next: NextFunction) => {
-        const { prompt, user_id } = req.body as { prompt: string, user_id: string };
+        const { prompt, user_id, title } = req.body as CreateLandingDto;
         try {
-            const landing = await this.landingUseCase.createAi({ user_id, prompt })
+            const landing = await this.landingUseCase.createAi({ user_id, prompt, title });
 
-            // return res.status(200).json(landing)
             return res.status(200).json({
                 id: landing?.id,
+                title: landing?.title,
                 template: landing?.template,
                 sections: landing?.sections
             })

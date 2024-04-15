@@ -2,6 +2,7 @@ import { Schema, model } from "mongoose";
 
 const landingSchema = new Schema({
     id: { type: String, required: true, unique: true },
+    title: { type: String, required: true },
     initial_prompt: { type: String, required: true },
     template: { type: String, required: true },
     sections: { type: Object, required: true, default: {} },

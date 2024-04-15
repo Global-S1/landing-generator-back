@@ -20,13 +20,16 @@ export class MongoLandingRepository implements ILandingRepository {
 
         return landings
     }
-    async update(landingId: string, { template, total_tokens, sections }: UpdateLandingDto): Promise<LandingEntity> {
+    async update(landingId: string, { template, total_tokens, sections, history, title }: UpdateLandingDto): Promise<LandingEntity> {
 
         const data = {
+            title,
             template,
             total_tokens,
-            sections
+            sections,
+            history
         }
+        
         const updatedLanding = await landingSchema.findOneAndUpdate({id:landingId}, data, { new: true });
         return updatedLanding as LandingEntity;
     }
