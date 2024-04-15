@@ -1,6 +1,6 @@
 import { NotFoundError } from "../../../utils/errors";
 import { ILandingRepository } from "../../domain"
-import { EditElementContentDto } from "../interfaces"
+import { EditElementContentDto, EditElementContentTestDto } from "../interfaces"
 import { JSDOM } from 'jsdom';
 
 export const editElementContent = async (
@@ -82,7 +82,44 @@ export const editElementContent = async (
     const newTemplate = dom.serialize()
     const updatedLanding = await landingRepository.update(landingId, {
         template: newTemplate,
-        history:[...landing.history, newTemplate],
+        history: [...landing.history, newTemplate],
+        sections
+    })
+
+    return updatedLanding
+}
+export const editElementText = async (
+    landingRepository: ILandingRepository,
+    landingId: string,
+    { sectionId = 'hero', tagName, newText, data_id }: EditElementContentTestDto
+) => {
+
+    const landing = await landingRepository.findOneById(landingId)
+    if (!landing) throw new NotFoundError('landing not exist');
+
+    const dom = new JSDOM(landing.template)
+    const document = dom.window.document
+    const sections = landing.sections
+
+    const section = document.getElementById(sectionId)
+
+    const $element = section?.querySelector(`[data-id="${data_id}"]`)
+
+    //TODO Validacion para el tipo de elemento 
+    if ($element) {
+        $element.textContent = newText.trim();
+
+        for (let element of sections[sectionId]) {
+            if (element.id === data_id) {
+                element.text = newText
+                return
+            }
+        }
+    }
+    const newTemplate = dom.serialize()
+    const updatedLanding = await landingRepository.update(landingId, {
+        template: newTemplate,
+        history: [...landing.history, newTemplate],
         sections
     })
 

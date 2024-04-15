@@ -1,11 +1,7 @@
+import { ElementToEdit } from "../landing/domain";
 import { classifyTypeElement } from "./classifyTypeElement";
+import { generateUniqueId } from './generateUniqueId';
 
-export interface ElementToEdit {
-    tagName: string;
-    type: string;
-    text: string;
-    attributes: { [key: string]: string };
-}
 
 export type ElementType = 'title' | 'subtitle' | 'description' | 'img' | 'link'
 
@@ -13,18 +9,23 @@ const validTagName: string[] = ['h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'p', 'a', 'i
 
 export const getElementInfo = (element: Element, array: ElementToEdit[]) => {
 
+
+    const elementId = generateUniqueId(element.tagName);
     const elementeToEdit: ElementToEdit = {
+        id: elementId,
         tagName: element.tagName,
         type: classifyTypeElement(element.tagName),
         text: "",
         attributes: {}
     }
 
+
     // Obtener texto solo si el elemento no tiene elementos hijos
     if (!element.children || element.children.length === 0) {
         elementeToEdit.text = element.textContent!.trim();
         if (validTagName.includes(element.tagName.toLocaleLowerCase())) {
 
+            element.setAttribute('data-id', elementId)
             array.push(elementeToEdit)
         }
     }
@@ -36,6 +37,7 @@ export const getElementInfo = (element: Element, array: ElementToEdit[]) => {
     }
     // Obtener información de los elementos
     for (let i = 0; i < element.children.length; i++) {
+
         const child = element.children[i];
         getElementInfo(child, array)
     }

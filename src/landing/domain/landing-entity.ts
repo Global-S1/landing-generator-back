@@ -13,6 +13,7 @@ export interface Sections { [id: string]: ElementToEdit[] }
 
 
 export interface ElementToEdit {
+    id: string;
     tagName: string;
     type: string;
     text: string;

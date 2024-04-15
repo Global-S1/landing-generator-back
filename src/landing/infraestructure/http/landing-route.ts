@@ -22,7 +22,13 @@ router.post('/create', [
     body('template_id', 'must be of type string').isString(),
     validateFields
 ], landingCtrl.create)
-router.post('/create-ai', landingCtrl.createAi)
+
+router.post('/create-ai', [
+    body('prompt', 'prompt is required').notEmpty(),
+    body('prompt', 'must be of type string').isString(),
+    body('user_id', 'must be of type string').isString(),
+    validateFields
+], landingCtrl.createAi)
 
 router.put('/edit-section/:id', [
     param('id', 'is required').notEmpty(),
@@ -45,6 +51,15 @@ router.put('/edit-element/:id', [
     body('tagName', 'must be required').isString(),
     validateFields
 ], landingCtrl.editElementContent)
+
+router.put('/edit-element-text/:id', [
+    param('id', 'is required').notEmpty(),
+    body('sectionId', 'must be required').isString(),
+    body('tagName', 'must be required').isString(),
+    body('newText', 'must be required').isString(),
+    body('data_id', 'must be required').isString(),
+    validateFields
+], landingCtrl.editElement)
 
 
 router.get('/earlier-version/:id', [
@@ -73,7 +88,6 @@ router.post('/images/upload/:id', [
     validateFields
 ], landingCtrl.uploadImg)
 
-router.get('/exp/convert', landingCtrl.convertToElementor)
 router.get('/exp/prepare', landingCtrl.prepareData)
 router.post('/exp/upload-tune', landingCtrl.uploadTuneFile)
 router.post('/exp/fine-tune', landingCtrl.fineTuning)

@@ -1,10 +1,10 @@
 import fs from 'fs';
 import path from 'path';
 import { NextFunction, type Request, type Response } from 'express';
-import { LandingUseCase } from "../../application/landing-use-case";
-import { EditElementContentDto } from '../../application/interfaces';
-import { customWriteFile } from '../../../helpers';
 import { UploadedFile } from 'express-fileupload';
+import { LandingUseCase } from "../../application/landing-use-case";
+import { EditElementContentDto, EditElementContentTestDto } from '../../application/interfaces';
+import { customWriteFile } from '../../../helpers';
 
 export class LandingController {
 
@@ -25,10 +25,16 @@ export class LandingController {
         }
     }
     public createAi = async (req: Request, res: Response, next: NextFunction) => {
+        const { prompt, user_id } = req.body as { prompt: string, user_id: string };
         try {
-            const data = await this.landingUseCase.createAi()
+            const landing = await this.landingUseCase.createAi({ user_id, prompt })
 
-            return res.status(200).json(data)
+            // return res.status(200).json(landing)
+            return res.status(200).json({
+                id: landing?.id,
+                template: landing?.template,
+                sections: landing?.sections
+            })
         } catch (error) {
             next(error)
         }
@@ -111,6 +117,21 @@ export class LandingController {
         }
     }
 
+    public editElement = async (req: Request, res: Response, next: NextFunction) => {
+        try {
+            const id = req.params.id;
+            const data = req.body as EditElementContentTestDto;
+
+            const landing = await this.landingUseCase.editElement(id, data);
+            return res.status(200).json({
+                template: landing?.template,
+                sections: landing?.sections
+            })
+        } catch (error) {
+            next(error)
+        }
+    }
+
     public earlierVersion = async (req: Request, res: Response, next: NextFunction) => {
         try {
             const id = req.params.id;
@@ -186,16 +207,7 @@ export class LandingController {
             next(error)
         }
     }
-    public convertToElementor = async (req: Request, res: Response, next: NextFunction) => {
-        try {
 
-            const template = await this.landingUseCase.converToElementor()
-
-            return res.status(200).json(template)
-        } catch (error) {
-            next(error)
-        }
-    }
     public prepareData = async (req: Request, res: Response, next: NextFunction) => {
         try {
 

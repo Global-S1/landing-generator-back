@@ -12,6 +12,12 @@ export interface EditElementContentDto {
         newValues: NewLinkValues;
     }
 }
+export interface EditElementContentTestDto {
+    sectionId: string;
+    tagName: string;
+    newText: string;
+    data_id: string
+}
 
 interface OldImgValues {
     src: string;
