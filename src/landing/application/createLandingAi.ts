@@ -37,7 +37,7 @@ export const createLandingAi = async (
 
     const userPrompt = prompt;
     // const sectionsId: SectionType[] = ['header', 'hero', 'features', 'about', 'faq', 'cta', 'footer'];
-    const sectionsId: SectionType[] = ['header', 'hero', 'features', 'about', 'faq', 'cta','testimonials', 'pricing', 'contact', 'footer'];
+    const sectionsId: SectionType[] = ['header', 'hero', 'features', 'about', 'faq', 'cta', 'testimonials', 'pricing', 'contact', 'footer'];
 
     const dom = new JSDOM(html);
     const document = dom.window.document;
@@ -49,8 +49,7 @@ export const createLandingAi = async (
         const SYSTEM_PROMPT = `You are an expert landing page developer using HTML with a tailwind.
         The user will ask you to generate a HTML section of a landing page, create this section considering that the landing page has these: ${sectionsId}.
         - Use semantic tags for each section and tag.
-        - Generate the design with a minimalist style.
-        - titulos principales( h1 - h2 ) y botones tendran un color verde, los subtitulos y el texto de color negro y el fondo de color blanco.
+        - Generate the design with a minimalist style, use pink such as primary color, the background should be white.
         - Generate responsive layouts. 
         - add the id attribute to this generated section, the value should be "${section}".
         - Just deliver the code, do not generate extra text or explanations.
@@ -136,3 +135,87 @@ export const createLandingAi = async (
     return landing;
 
 }
+
+
+// export const createLandingNew = async (
+//     userRepository: IUserRepository,
+//     landingRepository: ILandingRepository,
+//     { user_id, prompt, title }: Args
+// ) => {
+
+//     const user = await userRepository.findByUid(user_id);
+//     if (!user) throw new NotFoundError('user not exist');
+
+//     const userPrompt = prompt;
+//     // const sectionsId: SectionType[] = ['header', 'hero', 'features', 'about', 'faq', 'cta', 'footer'];
+//     const sectionsId: SectionType[] = ['header', 'hero', 'features', 'about', 'faq', 'cta', 'testimonials', 'pricing', 'contact', 'footer'];
+
+//     const dom = new JSDOM(html);
+//     const document = dom.window.document;
+
+//     let total_tokens_createBase = 0
+//     let total_tokens_createContent = 0
+
+//     for (const section of sectionsId) {
+
+//         //TODO: obtener plantilla por cada iteracion
+
+//         const newSection = `<h1>${section}</h1>`
+
+//         document.body.innerHTML += newSection;
+//     }
+
+//     const SYSTEM_PROMPT = `Eres un experto en la creación de contenido para una landing page. El usuario te proporcionará un objeto que representa todo el contenido que tendrá la landing page y sus secciones, junto con una descripción de su negocio.
+
+//     El objeto contendrá todas las secciones de una landing page, con los atributos necesarios, pero los valores estarán vacíos. A través de la descripción del negocio proporcionada por el usuario, debes reemplazar todos estos valores vacíos por el contenido correspondiente en su respectiva sección.
+        
+//     Utiliza la estructura exacta proporcionada por el usuario. Los primeros atributos son las secciones de una landing page, y solo deben incluirse esas secciones, sin agregar nuevas.
+        
+//     Entrega el objeto con el contenido de la landing, sin generar texto adicional o explicaciones.
+    
+//     NO incluyas markdown "\`\`\`" o "\`\`\`json" al principio o al final.`
+
+//     const USER_PROMPT = `Crea el contenido de mi landing page en este objeto: ${JSON.stringify({})}. Esta es la descripcion de mi negocio: ${description}`
+
+//     const completion = await chatCompletion({ system_prompt: SYSTEM_PROMPT, user_prompt: USER_PROMPT, model: 'gpt-3.5-turbo' });
+
+//     //todo
+//     const OBJETO_LANDING = completion.choices[0].message.content;
+
+
+//     //* Agregar objeto con los elementos de las secciones
+//     const sections: { [id: string]: ElementToEdit[] } = {};
+
+//     sectionsId.forEach(id => {
+
+//         const sectionDOM = document.getElementById(id);
+//         const sectionElements: ElementToEdit[] = [];
+//         if (sectionDOM) {
+//             getElementInfo(sectionDOM, sectionElements);
+//         }
+
+//         sections[id] = sectionElements;
+//     })
+
+
+//     //* Info 
+//     const directoryPath = path.join(__dirname, '/')
+//     customWriteFile({ directoryPath, fileName: 'template', content: dom.serialize(), mime: 'html' })
+//     console.log(total_tokens_createBase)
+//     console.log(total_tokens_createContent)
+
+//     const total_tokens = total_tokens_createBase + total_tokens_createContent
+//     const landingValue = new LandingValue({
+//         title,
+//         initial_prompt: prompt,
+//         template: dom.serialize(),
+//         history: [dom.serialize()],
+//         sections,
+//         total_tokens,
+//         user_id: user.uid
+//     })
+
+//     const landing = await landingRepository.create(landingValue);
+//     return landing;
+
+// }

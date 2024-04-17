@@ -13,6 +13,7 @@ import { UploadedFile } from "express-fileupload";
 import { prepareData, fineTuning, uploadFileOpenai, tuneModelCompletion, } from "./exp";
 import { createLandingAi } from "./createLandingAi";
 import { CreateLandingDto } from "../domain/landing-dto";
+import { completion } from "./exp/completion";
 
 export class LandingUseCase {
 
@@ -66,6 +67,6 @@ export class LandingUseCase {
         return fineTuning();
     }
     public tuneCompletion = async (html: string) => {
-        return tuneModelCompletion(html);
+        return completion();
     }
 }

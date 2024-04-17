@@ -19,5 +19,6 @@ export interface ElementToEdit {
     type: string;
     text: string;
     attributes: { [key: string]: string };
+    // html: string
     // status: true | false
 }
